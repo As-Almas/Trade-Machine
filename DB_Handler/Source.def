@@ -1,0 +1,5 @@
+LIBRARY DB_Handler
+
+EXPORTS
+	LoadDBData			@1
+	CloseDB				@2

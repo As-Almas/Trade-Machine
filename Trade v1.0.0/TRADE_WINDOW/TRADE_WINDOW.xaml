@@ -1,0 +1,54 @@
+﻿<Window x:Class="Trade_v1_0_0.TRADE_WINDOW"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Trade_v1_0_0"
+        mc:Ignorable="d"
+        Background="#FFD1D588"
+        Title="Trade v1.0.0 - Окно торговли" Height="400" Width="700">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="35*"/>
+            <ColumnDefinition Width="35*"/>
+            <ColumnDefinition Width="198*"/>
+            <ColumnDefinition Width="142*"/>
+            <ColumnDefinition Width="152*"/>
+            <ColumnDefinition Width="138*"/>
+            <ColumnDefinition Width="27*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Button Click="ToMainMenu">
+            
+            <Grid.Column>1</Grid.Column>
+            <Grid.Row>0</Grid.Row>
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Image Name="TRADE_IMAGE" Stretch="Fill" Source="../trade machine.png"/>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="TRADE_IMAGE" Property="Source" Value="../trade machine onMouseHover.png"></Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</Window>

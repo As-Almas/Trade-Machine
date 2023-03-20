@@ -4,9 +4,7 @@
 
 #include <vector>
 #include <string>
- 
-//  ZEXTERN int ZEXPORT uncompress OF((Bytef *dest,   uLongf *destLen,
-//          const Bytef* source, uLong sourceLen));
+
 
 /// <summary>
 /// Structure of png chunk. 
@@ -26,13 +24,16 @@ struct PNG_CHUNK {
     unsigned char* data; // max - int(data_length)
 };
 
+/// <summary>
+/// This struct uses for save and use a data from IHDR chunk.
+/// </summary>
 struct PNG_PARAMETRS {
-    unsigned __int32 width, height;
-    char bit_depth;
-    char color_type;
-    char compress_type;
-    char filter_type;
-    char Interlance;
+    unsigned __int32 width, height; // width and height of PNG image in pixels
+    char bit_depth; // bit depth of one color of pixel
+    char color_type; // type of used color for pixel (gray-scale, palitre, RGB, RGBA)
+    char compress_type; // type of compress the image. Now use a 0, but in future add a new compress types.
+    char filter_type; // filters of image
+    char Interlance; // Adam7 or 0
 };
 
 /// <summary>
@@ -158,7 +159,7 @@ bool SortChunks(std::vector<PNG_CHUNK*>& parsed) {
         if (!(
             CheckChunkName(parsed[i]->name, "IHDR") ||
             CheckChunkName(parsed[i]->name, "IDAT") ||
-            CheckChunkName(parsed[i]->name, "IEND")
+            CheckChunkName(parsed[i]->name, "IEND")   
             )) {
             delete parsed[i]->name;
             delete parsed[i]->data;
@@ -212,7 +213,37 @@ bool GetPNGParametrs(std::vector<PNG_CHUNK*>& parsed, PNG_PARAMETRS* params) {
     return true;
 }
 
+/// <summary>
+/// This function concatinate all IDAT chunk's data to one array of chars.
+/// </summary>
+/// <param name="parsed">Array of PNG_CHUNK's</param>
+/// <returns>return the array of chars. This array contane a all IDAT chunk's data.</returns>
+unsigned char* GetIDATData(std::vector<PNG_CHUNK*>& parsed) {
+    unsigned int size = 0;
+    for (auto x : parsed) {
+        if (CheckChunkName(x->name, "IDAT"))
+            size += x->data_length;
+    }
+    unsigned char* data = new unsigned char[size+1];
+    int last = 0;
+    for (auto x : parsed) {
+        if (CheckChunkName(x->name, "IDAT")) {
+            for (int i = 0; i < x->data_length; i++) {
+                data[last] = x->data[i];
+                last++;
+            }
+        }
+    }
+    data[size] = '\0';
+    return data;
+}
 
+unsigned char* UncommpressIMGData(unsigned char*IDAT_data, size_t length){
+    
+     
+
+    return (unsigned char*)"ERROR!";
+}
 
 /// <summary>
 /// This function can be called from the any programm for load a png file.
@@ -250,7 +281,7 @@ unsigned char* LoadPNG(const char* path)
     );
     CloseHandle(file);
 
-     
+
     if (size < 8)
         return nullptr;
     
@@ -271,10 +302,16 @@ unsigned char* LoadPNG(const char* path)
 
     PNG_PARAMETRS* parametrs = new PNG_PARAMETRS;
     GetPNGParametrs(chunks, parametrs);
+    
+    unsigned char* data = GetIDATData(chunks);
 
+
+    
+    
     FreeChunks(chunks);
+
 
     delete parametrs;
 
-    return nullptr;
+    return data;
 }
